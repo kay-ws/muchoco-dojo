@@ -3,6 +3,23 @@
   <head>
     <meta charset="utf-8" />
     <title>カレンダー</title>
+    <style>
+      .thisM {
+        text-align: center;
+      }
+      .prevM {
+        text-align: left;
+      }
+      .nextM {
+        text-align: right;
+      }
+      .sat {
+        color: blue;
+      }
+      .sun {
+        color: red;
+      }
+    </style>
     <?php
 function get_param() {
   $y = 0;
@@ -14,8 +31,8 @@ function get_param() {
   return [$y, $m];
 }
 function check_valid_param($y, $m) {
-  if ($y == 0) return false;
-  if ($m == 0) return false;
+  if ($y === 0) return false;
+  if ($m === 0) return false;
   if (!checkdate($m, 1, $y)) { //$y年$m月1日が有効な日付かチェック
     return false;
   }
@@ -23,7 +40,8 @@ function check_valid_param($y, $m) {
 }
       $year = 0;
       $month = 0;
-      $datetime= 0;
+      $datetime = 0;
+      $dayArray = ['月','火','水','木','金','土','日']; 
 
       try {      
       
@@ -45,16 +63,75 @@ function check_valid_param($y, $m) {
     ?>
   </head>
   <body>
-    <h2><?= $datetime->format('Y年m月') ?></h2>
-    <a href="./calender.php">今月へ</a>
-    <?php
-      $datetime->modify('-1 month');
-    ?>
-    <a href="./calender.php?y=<?= $datetime->format('Y') ?>&m=<?= $datetime->format('n') ?>">前月へ</a>
-    <?php
-      $datetime->modify('+2 months');
-    ?>
-    <a href="./calender.php?y=<?= $datetime->format('Y') ?>&m=<?= $datetime->format('n') ?>">来月へ</a>
-    
+    <table>
+      <tbody>
+        <tr>
+          <table border="1">
+            <caption><?= $datetime->format('Y年m月') ?></caption>
+            <thead>
+              <tr>
+                <?php foreach ($dayArray as $day) { ?>
+                <th><?= $day ?></th>
+                <?php } ?>
+              </tr>
+            </thead>
+            <tbody>
+              <?php
+                $dateArray = [];
+                $day_first = $datetime->format("w");
+                if ($day_first === 0) {
+                  $day_first = 7;
+                }
+                for($i = 1; $i < $day_first; $i++) {
+                  $dateArray[] = '&nbsp;';
+                }
+                for($date = 1; $date <= $datetime->format('t'); $date++) {
+                  $dateArray[] = $date;
+                }
+                $pudding = 7 - (count($dateArray) % 7);
+                if ($pudding === 7) {
+                  $pudding = 0;
+                }
+                for($i = 0; $i < $pudding; $i++) {
+                  $dateArray[] = '&nbsp;';
+                }
+                for($i = 0; $i < count($dateArray); $i++) {
+              ?>
+              <?php if ($i % 7 === 0) { //行開始 ?>
+              <tr>
+              <?php } ?>
+      
+              <?php if ($i % 7 === 5) { //土日の色付け ?>
+              <td class="sat"><?= $dateArray[$i] ?></td>
+              <?php } elseif ($i % 7 === 6) { ?>
+              <td class="sun"><?= $dateArray[$i] ?></td>
+              <?php } else { ?>
+              <td><?= $dateArray[$i] ?></td>
+              <?php } ?>
+              
+              <?php if ($i % 7 === 6) { //行末 ?>
+              </tr>
+              <?php } ?>
+      
+              <?php
+                }
+              ?>
+            </tbody>
+          </table>  
+        </tr>
+        <tr class="thisM"><a href="./calender.php">今月</a></tr><br />
+        <tr>
+          <?php
+            $datetime->modify('-1 month');
+          ?>
+          <a class="prevM" href="./calender.php?y=<?= $datetime->format('Y') ?>&m=<?= $datetime->format('n') ?>">前月へ</a>
+
+          <?php
+            $datetime->modify('+2 months');
+          ?>
+          <a class="nextM" href="./calender.php?y=<?= $datetime->format('Y') ?>&m=<?= $datetime->format('n') ?>">来月へ</a>
+        </tr>      
+      </tbody>
+    </table>
   </body>
 </html>
