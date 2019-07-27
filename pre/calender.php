@@ -119,17 +119,20 @@ function check_valid_param($y, $m) {
             </tbody>
           </table>  
         </tr>
-        <tr class="thisM"><a href="./calender.php">今月</a></tr><br />
+        <tr class="thisM"><td><a href="./calender.php">今月</a></td></tr>
         <tr>
+          <td>
           <?php
             $datetime->modify('-1 month');
           ?>
           <a class="prevM" href="./calender.php?y=<?= $datetime->format('Y') ?>&m=<?= $datetime->format('n') ?>">前月へ</a>
-
+          </td>
+          <td>
           <?php
             $datetime->modify('+2 months');
           ?>
           <a class="nextM" href="./calender.php?y=<?= $datetime->format('Y') ?>&m=<?= $datetime->format('n') ?>">来月へ</a>
+          </td>
         </tr>      
       </tbody>
     </table>
