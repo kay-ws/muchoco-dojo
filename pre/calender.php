@@ -4,20 +4,14 @@
     <meta charset="utf-8" />
     <title>カレンダー</title>
     <style>
-      .thisM {
-        text-align: center;
-      }
-      .prevM {
-        text-align: left;
-      }
-      .nextM {
-        text-align: right;
-      }
       .sat {
         color: blue;
       }
       .sun {
         color: red;
+      }
+      .ahref {
+        text-align: center;
       }
     </style>
     <?php
@@ -40,7 +34,6 @@ function check_valid_param($y, $m) {
 }
       $year = 0;
       $month = 0;
-      $datetime = 0;
       $dayArray = ['月','火','水','木','金','土','日']; 
 
       try {      
@@ -55,7 +48,12 @@ function check_valid_param($y, $m) {
           $month = intval($now->format('n'));
         }
 
-        $datetime = new DateTime("{$year}-{$month}-1");
+        $thisMonth = new DateTime();
+        $thisMonth->setDate($year, $month, 1);
+        $prevMonth = new DateTime();
+        $prevMonth->setDate($year, $month - 1, 1);
+        $nextMonth = new DateTime();
+        $nextMonth->setDate($year, $month + 1, 1);
       } catch (Exception $e) {
         echo $e->getMessage();
         exit(1);
@@ -67,7 +65,7 @@ function check_valid_param($y, $m) {
       <tbody>
         <tr>
           <table border="1">
-            <caption><?= $datetime->format('Y年m月') ?></caption>
+            <caption><?= $thisMonth->format('Y年m月') ?></caption>
             <thead>
               <tr>
                 <?php foreach ($dayArray as $day) { ?>
@@ -78,21 +76,21 @@ function check_valid_param($y, $m) {
             <tbody>
               <?php
                 $dateArray = [];
-                $day_first = $datetime->format("w");
+                $day_first = $thisMonth->format("w");
                 if ($day_first === 0) {
                   $day_first = 7;
                 }
-                for($i = 1; $i < $day_first; $i++) {
+                for($i = 1; $i < $day_first; $i++) { //前パティング
                   $dateArray[] = '&nbsp;';
                 }
-                for($date = 1; $date <= $datetime->format('t'); $date++) {
+                for($date = 1; $date <= $thisMonth->format('t'); $date++) {
                   $dateArray[] = $date;
                 }
                 $pudding = 7 - (count($dateArray) % 7);
                 if ($pudding === 7) {
                   $pudding = 0;
                 }
-                for($i = 0; $i < $pudding; $i++) {
+                for($i = 0; $i < $pudding; $i++) { //後パティング
                   $dateArray[] = '&nbsp;';
                 }
                 for($i = 0; $i < count($dateArray); $i++) {
@@ -119,19 +117,14 @@ function check_valid_param($y, $m) {
             </tbody>
           </table>  
         </tr>
-        <tr class="thisM"><td><a href="./calender.php">今月</a></td></tr>
-        <tr>
+        <tr></tr>
+        <tr class="ahref">
           <td>
-          <?php
-            $datetime->modify('-1 month');
-          ?>
-          <a class="prevM" href="./calender.php?y=<?= $datetime->format('Y') ?>&m=<?= $datetime->format('n') ?>">前月へ</a>
+            <a href="./calender.php?y=<?= $prevMonth->format('Y') ?>&m=<?= $prevMonth->format('n') ?>">前月へ</a>
           </td>
+          <td><a href="./calender.php">今月</a></td>
           <td>
-          <?php
-            $datetime->modify('+2 months');
-          ?>
-          <a class="nextM" href="./calender.php?y=<?= $datetime->format('Y') ?>&m=<?= $datetime->format('n') ?>">来月へ</a>
+            <a href="./calender.php?y=<?= $nextMonth->format('Y') ?>&m=<?= $nextMonth->format('n') ?>">来月へ</a>
           </td>
         </tr>      
       </tbody>
