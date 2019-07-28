@@ -1,1 +1,1 @@
-# muchoko-dojo
+# muchoco-dojo
