@@ -65,7 +65,7 @@ if ($is_executed) {
     </style>
   </head>
   <body>
-   <form method="POST" action"./quiz.php">
+    <form method="POST" action"./quiz.php">
       <p>
         [Q1] ４の階乗（4!）の値は？：
         <input type="text" name="text1" value=<?= $answer1 ?>></input>
@@ -93,7 +93,6 @@ if ($is_executed) {
         <?= $answer3_comment ?>
       </p>
       <input type="submit" name="send" value="回答する"></input>
-   </form>
- </body>
-  </head>
+    </form>
+  </body>
 </html>
