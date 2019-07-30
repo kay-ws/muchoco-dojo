@@ -10,8 +10,24 @@
       .sun {
         color: red;
       }
+      table {
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+      }
       .ahref {
         text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .ahref ul {
+        list-style: none;
+      }
+      .prevM {
+        float: left;
+      }
+      .nextM {
+        float: right;
       }
     </style>
     <?php
@@ -35,6 +51,8 @@ function check_valid_param($y, $m) {
       $year = 0;
       $month = 0;
       $dayArray = ['月','火','水','木','金','土','日']; 
+      $prevPadding = array(6, 0, 1, 2, 3, 4, 5);
+      $nextPadding = array(0, 6, 5, 4, 3, 2, 1);
 
       try {      
       
@@ -54,6 +72,46 @@ function check_valid_param($y, $m) {
         $prevMonth->setDate($year, $month - 1, 1);
         $nextMonth = new DateTime();
         $nextMonth->setDate($year, $month + 1, 1);
+
+//      １  ２  ３  ４  ５  ６  ７
+//      月  火  水  木  金　土  日
+        
+        $header = '';
+        foreach ($dayArray as $day) {
+          $header .= "<th>${day}</th>";
+        }
+
+        $dateArray = array();
+        $dayFirst = intval($thisMonth->format("w"));
+        $prevPaddingCount = $prevPadding[$dayFirst];
+        for($i = 0; $i < $prevPaddingCount; $i++) { //前パティング
+          $dateArray[] = '&nbsp;';
+        }
+        for($date = 1; $date <= $thisMonth->format('t'); $date++) {
+          $dateArray[] = $date;
+        }
+        $nextPaddingCount = $nextPadding[count($dateArray) % 7];
+        for($i = 0; $i < $nextPaddingCount; $i++) { //後パティング
+          $dateArray[] = '&nbsp;';
+        }
+
+        $tbody = '';
+        for($i = 0; $i < count($dateArray); $i++) {
+          switch (($i + 1) % 7) {
+            case 1:  //月曜日
+              $tbody .= "<tr><td>${dateArray[$i]}</td>";
+              break;
+            case 6:  //土曜日
+              $tbody .= "<td class='sat'>${dateArray[$i]}</td>";
+              break;
+            case 0:  //日曜日 (=7)
+              $tbody .= "<td class='sun'>${dateArray[$i]}</td></tr>";
+              break;
+            default: //その他の曜日
+              $tbody .= "<td>${dateArray[$i]}</td>";
+              break;
+          }
+        }
       } catch (Exception $e) {
         echo $e->getMessage();
         exit(1);
@@ -61,73 +119,33 @@ function check_valid_param($y, $m) {
     ?>
   </head>
   <body>
-    <table>
-      <tbody>
-        <tr>
-          <table border="1">
-            <caption><?= $thisMonth->format('Y年m月') ?></caption>
-            <thead>
-              <tr>
-                <?php foreach ($dayArray as $day) { ?>
-                <th><?= $day ?></th>
-                <?php } ?>
-              </tr>
-            </thead>
-            <tbody>
-              <?php
-                $dateArray = [];
-                $day_first = $thisMonth->format("w");
-                if ($day_first === 0) {
-                  $day_first = 7;
-                }
-                for($i = 1; $i < $day_first; $i++) { //前パティング
-                  $dateArray[] = '&nbsp;';
-                }
-                for($date = 1; $date <= $thisMonth->format('t'); $date++) {
-                  $dateArray[] = $date;
-                }
-                $pudding = 7 - (count($dateArray) % 7);
-                if ($pudding === 7) {
-                  $pudding = 0;
-                }
-                for($i = 0; $i < $pudding; $i++) { //後パティング
-                  $dateArray[] = '&nbsp;';
-                }
-                for($i = 0; $i < count($dateArray); $i++) {
-              ?>
-              <?php if ($i % 7 === 0) { //行開始 ?>
-              <tr>
-              <?php } ?>
-      
-              <?php if ($i % 7 === 5) { //土日の色付け ?>
-              <td class="sat"><?= $dateArray[$i] ?></td>
-              <?php } elseif ($i % 7 === 6) { ?>
-              <td class="sun"><?= $dateArray[$i] ?></td>
-              <?php } else { ?>
-              <td><?= $dateArray[$i] ?></td>
-              <?php } ?>
-              
-              <?php if ($i % 7 === 6) { //行末 ?>
-              </tr>
-              <?php } ?>
-      
-              <?php
-                }
-              ?>
-            </tbody>
-          </table>  
-        </tr>
-        <tr></tr>
-        <tr class="ahref">
-          <td>
+    <div class="tablewrapper">
+      <div class="table">
+        <table border="1">
+          <caption><?= $thisMonth->format('Y年m月') ?></caption>
+          <thead>
+            <tr><?= $header ?></tr>
+          </thead>
+          <tbody>
+            <?= $tbody ?>
+          </tbody>
+        </table>
+      </div>
+      <div class="ahref">
+        <ul>
+          <li>
+            <a href="./calender.php">今月</a>
+          </li>
+        </ul>
+        <ul>
+          <li class="prevM">
             <a href="./calender.php?y=<?= $prevMonth->format('Y') ?>&m=<?= $prevMonth->format('n') ?>">前月へ</a>
-          </td>
-          <td><a href="./calender.php">今月</a></td>
-          <td>
+          </li>
+          <li class="nextM">
             <a href="./calender.php?y=<?= $nextMonth->format('Y') ?>&m=<?= $nextMonth->format('n') ?>">来月へ</a>
-          </td>
-        </tr>      
-      </tbody>
-    </table>
+          </li>
+        </ul>
+      </div>
+    </div>
   </body>
 </html>
