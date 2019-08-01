@@ -3,31 +3,30 @@
   <head>
     <meta charset="utf-8" />
     <title>カレンダー</title>
-    <style>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style media="screen">
       .sat {
         color: blue;
       }
       .sun {
         color: red;
       }
-      table {
+      .conteiner {
         text-align: center;
+      }
+      .tableHeader {
+        font-weight: bold;
+      }
+      .table table {
+        width 50%
+        margin 0 auto;
+        max-width: 768px;
+        border: 1px;
+        align: center;
         margin-left: auto;
         margin-right: auto;
-      }
-      .ahref {
-        text-align: center;
-        margin-left: auto;
-        margin-right: auto;
-      }
-      .ahref ul {
-        list-style: none;
-      }
-      .prevM {
-        float: left;
-      }
-      .nextM {
-        float: right;
       }
     </style>
     <?php
@@ -72,6 +71,10 @@ function check_valid_param($y, $m) {
         $prevMonth->setDate($year, $month - 1, 1);
         $nextMonth = new DateTime();
         $nextMonth->setDate($year, $month + 1, 1);
+        
+        $thisMonthText = $thisMonth->format('Y年m月');
+        $prevMonthText = "y=" . $prevMonth->format('Y') . "&m=" . $prevMonth->format('n');
+        $nextMonthText = "y=" . $nextMonth->format('Y') . "&m=" . $nextMonth->format('n');
 
 //      １  ２  ３  ４  ５  ６  ７
 //      月  火  水  木  金　土  日
@@ -119,33 +122,51 @@ function check_valid_param($y, $m) {
     ?>
   </head>
   <body>
-    <div class="tablewrapper">
-      <div class="table">
-        <table border="1">
-          <caption><?= $thisMonth->format('Y年m月') ?></caption>
-          <thead>
-            <tr><?= $header ?></tr>
-          </thead>
-          <tbody>
-            <?= $tbody ?>
-          </tbody>
-        </table>
+    <div class="conteiner">
+      <div class="row">
+        <div class="col-md-5"></div>
+        <div class="col-md-2">
+          <span class="tableHeader"><?= $thisMonthText ?></span>
+        </div>
+        <div class="col-md-5"></div>
       </div>
-      <div class="ahref">
-        <ul>
-          <li>
-            <a href="./calender.php">今月</a>
-          </li>
-        </ul>
-        <ul>
-          <li class="prevM">
-            <a href="./calender.php?y=<?= $prevMonth->format('Y') ?>&m=<?= $prevMonth->format('n') ?>">前月へ</a>
-          </li>
-          <li class="nextM">
-            <a href="./calender.php?y=<?= $nextMonth->format('Y') ?>&m=<?= $nextMonth->format('n') ?>">来月へ</a>
-          </li>
-        </ul>
+      <div class-"row">
+        <div class="col-md-12">
+          <div class="table">
+            <table>
+              <thead>
+                <tr><?= $header ?></tr>
+              </thead>
+              <tbody>
+                <?= $tbody ?>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-5"></div>
+        <div class="col-md-2">
+          <a href="./calender.php">今月</a>
+        </div>
+        <div class="col-md-5"></div>
+      </div>
+      <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-1">
+          <a href="./calender.php?<?= $prevMonthText ?>">前月へ</a>
+        </div>
+        <div class="col-md-2"></div>
+        <div class="col-md-1">
+          <a href="./calender.php?<?= $nextMonthText ?>">来月へ</a>
+        </div>
+        <div class="col-md-4"></div>
       </div>
     </div>
+  
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
   </body>
 </html>
