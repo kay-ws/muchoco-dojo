@@ -1,3 +1,4 @@
+<!-- https://qiita.com/mpyw/items/2c54d0ea95423bd88f60 -->
 <?php
 
 function h($str) {
