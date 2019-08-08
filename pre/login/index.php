@@ -5,10 +5,12 @@ function h($s){
 }
 
 session_start();
+session_regenerate_id(TRUE);
+
 //ログイン済みの場合
 if (isset($_SESSION['EMAIL'])) {
   echo 'ようこそ' .  h($_SESSION['EMAIL']) . 'さん<br>';
-  echo "<a href='/logout.php'>ログアウトはこちら。</a>";
+  echo "<a href='logout.php'>ログアウトはこちら。</a>";
   exit;
 }
 

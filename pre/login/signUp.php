@@ -5,6 +5,8 @@ function h($s){
 }
 
 session_start();
+session_regenerate_id(TRUE);
+
 //ログイン済みの場合
 if (isset($_SESSION['EMAIL'])) {
   echo 'ようこそ' .  h($_SESSION['EMAIL']) . 'さん<br>';

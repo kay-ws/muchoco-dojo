@@ -3,6 +3,8 @@
 require_once('config.php');
 
 session_start();
+session_regenerate_id(TRUE);
+
 //POSTのvalidate
 if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
   echo '入力された値が不正です。';
