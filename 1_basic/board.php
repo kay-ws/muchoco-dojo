@@ -4,6 +4,7 @@ require_once('config.php');
 
 
 //セッションIDの更新
+session_start();
 session_regenerate_id(true);
 
 $info = '';
@@ -20,7 +21,7 @@ while(true) {
   //DB内でPOSTされたメールアドレスを検索
   try {
     $pdo = new PDO(DSN, DB_USER, DB_PASS);
-    $stmt = $pdo->prepare('select * from users where email = ?');
+    $stmt = $pdo->prepare('select * from board.users where email = ?');
     $stmt->execute([$_POST['email']]);
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
   } catch (\Exception $e) {
@@ -37,16 +38,17 @@ while(true) {
     $_SESSION['EMAIL'] = $row['email'];
     $info = 'ログインしました';
     $go_board = true;
+    break;
   } else {
     $info = 'メールアドレス又はパスワードが間違っています。';
+    break;
   }
-　break;
 }
 
 if (!$go_board) {
   require_once('template.php');
 } else {
-  require_once('board_template');  
+  require_once('board_template.php');  
 }
 
 ?>

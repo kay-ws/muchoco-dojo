@@ -26,7 +26,7 @@ $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 //登録処理
 try {
-  $stmt = $pdo->prepare("insert into userDeta(email, password) value(?, ?)");
+  $stmt = $pdo->prepare("insert into users(email, password) value(?, ?)");
   $stmt->execute([$email, $password]);
   $info = '登録完了';
 } catch (\Exception $e) {

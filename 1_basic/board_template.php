@@ -20,31 +20,19 @@
 <?php
     try {
       $pdo = new PDO(DSN, DB_USER, DB_PASS);
-      $stmt = $pdo->prepare('select * from posts where email = ?');
-      $stmt->execute([$_POST['email']]);
-      
-      
+      $stmt = $pdo->prepare('select * from posts where parentId = 0 order by id DESC Limit 10');
+      $stmt->execute();
     }
-    
-    <div class="post">
-    <h2>投稿：<?= ?></h2>  
-    </div>
-    
-    <h1>ログイン</h1>
-    <form action="login.php" method="post">
-      <label for="email">email</label>
-      <input type="email" name="email">
-      <label for="password">password</label>
-      <input type="password" name="password">
-      <button type="submit" name ="login">ログイン</button>
-   </form>
-   <h1>新規登録</h1>
-   <form action="signUp.php" method="post">
-     <label for="email">email</label>
-     <input type="email" name="email">
-     <label for="password">password</label>
-     <input type="password" name="password">
-     <button type="submit" name="signUp">新規登録</button>
-   </form>
+    foreach ($stmt as $row) {
+?>
+      <div class="post">
+        <h2>投稿：<?= row['email'] ?></h2>
+        <img src="<?= row['imagePath'] ?>"
+        <span>message:<? row['message'] ?></span>
+        <hr>
+      </div>
+<?php
+    }
+?>    
  </body>
 </html>

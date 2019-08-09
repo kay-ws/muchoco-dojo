@@ -8,7 +8,7 @@
    <div class="infoMessage"><?= $info ?></div>
 
    <h1>ログイン</h1>
-   <form action="login.php" method="post">
+   <form action="board.php" method="post">
      <label for="email">email</label>
      <input type="email" name="email">
      <label for="password">password</label>
