@@ -11,7 +11,7 @@
  <body>
     <div class="infoMessage"><?= $info ?></div>
 
-    <form action="post.php" method="post">
+    <form action="post.php" method="post" enctype="multipart/form-data">
       <input type="hidden" name="id" value="">
       <input type="hidden" name="parentId" value="0">
       <button type="submit" name="post">新規投稿</button>
@@ -35,9 +35,9 @@
           <input type="hidden" name="parentId" value="<?= $row['id'] ?>">
           
           <h2>投稿：<?= $row['email'] ?></h2>
-          <img src="<?= $row['imagePath'] ?>"
           <p>message:<?= $row['message'] ?></p>
-          <button type="submit" name="commentPost">コメントする</button>
+          <p><img src="<?= $row['imagePath'] ?>"></p>
+         <button type="submit" name="commentPost">コメントする</button>
         </form>
         <form action="delete.php" method="post">
           <input type='hidden' name="id" value="<?= $row['id'] ?>">
@@ -56,8 +56,8 @@
             <input type="hidden" name="parentId" value="<?= $row['id'] ?>">
             
             <h4>コメント：<?= $row2['email'] ?></h4>
-            <img src="<?= $row2['imagePath'] ?>"
-            <p>message:<?= $row2['message'] ?></p>
+          <p>message:<?= $row2['message'] ?></p>
+          <p><img src="<?= $row2['imagePath'] ?>"></p>
             <button type="submit" name="commentPost">コメントする</button>
           </form>
           <form action="delete.php" method="post">
