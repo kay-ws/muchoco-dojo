@@ -22,7 +22,6 @@ $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 //データベースへ接続
 require_once('config.php');
 $pdo = new PDO(DSN, DB_USER, DB_PASS);
-$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 //登録処理
 try {

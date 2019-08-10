@@ -13,8 +13,6 @@ session_regenerate_id(true);
 
 $info = '';
 
-var_dump(">>>", $_POST);
-
 try {
   $pdo = new PDO(DSN, DB_USER, DB_PASS);
   $stmt = $pdo->prepare('insert into board.posts (parentId, email, imagePath, message) values(?, ?, ?, ?)');

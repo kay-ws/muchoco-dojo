@@ -12,6 +12,7 @@
     <div class="infoMessage"><?= $info ?></div>
 
     <form action="post.php" method="post">
+      <input type="hidden" name="id" value="">
       <input type="hidden" name="parentId" value="0">
       <button type="submit" name="post">新規投稿</button>
     </form>
@@ -39,6 +40,7 @@
           <button type="submit" name="commentPost">コメントする</button>
         </form>
         <form action="delete.php" method="post">
+          <input type='hidden' name="id" value="<?= $row['id'] ?>">
           <button type="submit" name="deletePost">削除</button>
         </form>
 <?php
@@ -60,6 +62,7 @@
             <button type="submit" name="commentPost">コメントする</button>
           </form>
           <form action="delete.php" method="post">
+            <input type='hidden' name="id" value="<?= $row2['id'] ?>">
             <button type="submit" name="deletePost">削除</button>
           </form>
 <?php
