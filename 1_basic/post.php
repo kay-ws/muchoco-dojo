@@ -12,6 +12,8 @@ require_once('config.php');
 session_start();
 session_regenerate_id(true);
 
+var_dump($_POST);
+
 if (isset($_POST['post'])) {
   $header = "投稿：";
 } else {
@@ -34,7 +36,7 @@ $info = '';
    <h1><?= $header ?><?= $_SESSION['email'] ?></h1>
    <form action="regist.php" method="post">
       <input type="hidden" name="email" value="<?= $_SESSION['email']?>">
-      <input type="hidden" name="parentID" value="<?= $parentId ?>">  
+      <input type="hidden" name="parentId" value="<?= $parentId ?>">  
       <img src="">
       <input type="text" name="message">
       <button type="submit" name ="regist">投稿</button>

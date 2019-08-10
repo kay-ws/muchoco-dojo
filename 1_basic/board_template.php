@@ -31,7 +31,7 @@
 ?>
       <div class="post">
         <form action="post.php" method="post">
-          <input type="hidden" name="parentId" value="<?= $row['parentId'] ?>">
+          <input type="hidden" name="parentId" value="<?= $row['id'] ?>">
           
           <h2>投稿：<?= $row['email'] ?></h2>
           <img src="<?= $row['imagePath'] ?>"
@@ -49,9 +49,10 @@
           $info = '投稿がよみこめませんでした。';
         }
         foreach ($stmt2 as $row2) {
+        var_dump($row2);
 ?>
           <form action="post.php" method="post">
-            <input type="hidden" name="parentId" value="<?= $row2['parentId'] ?>">
+            <input type="hidden" name="parentId" value="<?= $row['id'] ?>">
             
             <h4>コメント：<?= $row2['email'] ?></h4>
             <img src="<?= $row2['imagePath'] ?>"
