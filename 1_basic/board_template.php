@@ -51,7 +51,6 @@
           $info = '投稿がよみこめませんでした。';
         }
         foreach ($stmt2 as $row2) {
-        var_dump($row2);
 ?>
           <form action="post.php" method="post">
             <input type="hidden" name="parentId" value="<?= $row['id'] ?>">

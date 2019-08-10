@@ -13,7 +13,7 @@ $info ='';
 //該当idのレコードを削除
 try {
   $pdo = new PDO(DSN, DB_USER, DB_PASS);
-  $stmt = $pdo->prepare('delete from board.users where id = ?');
+  $stmt = $pdo->prepare('delete from board.posts where id = ?');
   $stmt->execute([$_POST['id']]);
   $info = "削除に成功しました。";
 } catch (\Exception $e) {
