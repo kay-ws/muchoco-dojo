@@ -12,6 +12,7 @@
     <div class="infoMessage"><?= $info ?></div>
 
     <form action="post.php" method="post">
+      <input type="hidden" name="parentId" value="0">
       <button type="submit" name="post">新規投稿</button>
     </form>
     <form action="logout.php" method="post">
@@ -29,12 +30,16 @@
     foreach ($stmt as $row) {
 ?>
       <div class="post">
-        <form action="comment.php">
+        <form action="post.php" method="post">
+          <input type="hidden" name="parentId" value="<?= $row['parentId'] ?>">
+          
           <h2>投稿：<?= $row['email'] ?></h2>
           <img src="<?= $row['imagePath'] ?>"
           <p>message:<?= $row['message'] ?></p>
-          <button type="submit" name="commentPost" method="post">コメントする</button>
-          <button type="submit" name="deletePost" method="post">削除</button>
+          <button type="submit" name="commentPost">コメントする</button>
+        </form>
+        <form action="delete.php" method="post">
+          <button type="submit" name="deletePost">削除</button>
         </form>
 <?php
         try {
@@ -45,12 +50,16 @@
         }
         foreach ($stmt2 as $row2) {
 ?>
-          <form action="comment.php">
-            <h4>コメント：<?= $row['email'] ?></h4>
-            <img src="<?= $row['imagePath'] ?>"
-            <span>message:<?= $row['message'] ?></span>
-            <button type="submit" name="commentPost" method="post">コメントする</button>
-            <button type="submit" name="deletePost" method="post">削除</button>
+          <form action="post.php" method="post">
+            <input type="hidden" name="parentId" value="<?= $row2['parentId'] ?>">
+            
+            <h4>コメント：<?= $row2['email'] ?></h4>
+            <img src="<?= $row2['imagePath'] ?>"
+            <p>message:<?= $row2['message'] ?></p>
+            <button type="submit" name="commentPost">コメントする</button>
+          </form>
+          <form action="delete.php" method="post">
+            <button type="submit" name="deletePost">削除</button>
           </form>
 <?php
         }

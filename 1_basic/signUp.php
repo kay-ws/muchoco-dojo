@@ -33,6 +33,6 @@ try {
   $info = '登録済みのメールアドレスです。';
 }
 
-require_once('template.php')
+require_once('index_template.php')
 ?>
 

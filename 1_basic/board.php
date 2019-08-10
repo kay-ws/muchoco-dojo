@@ -1,4 +1,8 @@
 <?php
+//HTMLのエスケープ
+function h($s){
+  return htmlspecialchars($s, ENT_QUOTES, 'utf-8');
+}
 
 require_once('config.php');
 
@@ -18,7 +22,7 @@ while(true) {
     break;
   }
   
-  //DB内でPOSTされたメールアドレスを検索
+  //DB内でPOSTされたemailを検索
   try {
     $pdo = new PDO(DSN, DB_USER, DB_PASS);
     $stmt = $pdo->prepare('select * from board.users where email = ?');
@@ -33,9 +37,10 @@ while(true) {
     break;
   }
   
-  //パスワード確認後sessionにメールアドレスを渡す
+  //パスワード確認後sessionにemail、passwordを渡す
   if (password_verify($_POST['password'], $row['password'])) {
-    $_SESSION['EMAIL'] = $row['email'];
+    $_SESSION['email'] = $row['email'];
+    $_SESSION['password'] = $row['password'];
     $info = 'ログインしました';
     $go_board = true;
     break;
@@ -46,7 +51,7 @@ while(true) {
 }
 
 if (!$go_board) {
-  require_once('template.php');
+  require_once('index_template.php');
 } else {
   require_once('board_template.php');  
 }

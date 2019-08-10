@@ -1,5 +1,10 @@
 <?php
+//HTMLのエスケープ
+function h($s){
+  return htmlspecialchars($s, ENT_QUOTES, 'utf-8');
+}
 
+//セッション開始とid再割り当て
 require_once('config.php');
 
 
@@ -7,48 +12,32 @@ require_once('config.php');
 session_start();
 session_regenerate_id(true);
 
-$info = '';
-$go_board = false;
-
-//無限ループではない。必ず１回目でbreak
-while(true) {
-  //emailのvalidate
-  if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
-    $info = '入力された値が不正です。';
-    break;
-  }
-  
-  //DB内でPOSTされたメールアドレスを検索
-  try {
-    $pdo = new PDO(DSN, DB_USER, DB_PASS);
-    $stmt = $pdo->prepare('select * from board.users where email = ?');
-    $stmt->execute([$_POST['email']]);
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-  } catch (\Exception $e) {
-    echo $e->getMessage() . PHP_EOL;
-  }
-  //emailがDB内に存在しているか確認
-  if (!isset($row['email'])) {
-    $info = 'メールアドレス又はパスワードが間違っています。';
-    break;
-  }
-  
-  //パスワード確認後sessionにメールアドレスを渡す
-  if (password_verify($_POST['password'], $row['password'])) {
-    $_SESSION['EMAIL'] = $row['email'];
-    $info = 'ログインしました';
-    $go_board = true;
-    break;
-  } else {
-    $info = 'メールアドレス又はパスワードが間違っています。';
-    break;
-  }
-}
-
-if (!$go_board) {
-  require_once('template.php');
+if (isset($_POST['post'])) {
+  $header = "投稿：";
 } else {
-  require_once('board_template.php');  
+  $header = "コメント：";
 }
 
+$parentId = h($_POST['parentId']);
+$info = '';
 ?>
+
+<!DOCTYPE html>
+<html lang="ja">
+ <head>
+   <meta charset="utf-8">
+   <title>掲示板（投稿）</title>
+ </head>
+ <body>
+   <div class="infoMessage"><?= $info ?></div>
+
+   <h1><?= $header ?><?= $_SESSION['email'] ?></h1>
+   <form action="regist.php" method="post">
+      <input type="hidden" name="email" value="<?= $_SESSION['email']?>">
+      <input type="hidden" name="parentID" value="<?= $parentId ?>">  
+      <img src="">
+      <input type="text" name="message">
+      <button type="submit" name ="regist">投稿</button>
+   </form>
+ </body>
+</html>

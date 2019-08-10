@@ -17,5 +17,5 @@ if (isset($_SESSION['EMAIL'])) {
 
 $info ='';
 
-require_once('template.php');
+require_once('index_template.php');
 ?>
