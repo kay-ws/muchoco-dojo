@@ -47,7 +47,7 @@
         <?php endif; ?>
 <?php
         try {
-          $stmt2 = $pdo->prepare('select * from posts where parentId = ? order by id DESC');
+          $stmt2 = $pdo->prepare('select * from posts where parentId = ? order by id DESC limit 10');
           $stmt2->execute([ $row['id'] ]);
         } catch (\Exception $e) {
           $info = '投稿がよみこめませんでした。';
