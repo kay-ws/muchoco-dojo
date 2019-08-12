@@ -1,5 +1,4 @@
 <?php
-session_start();
 session_regenerate_id(TRUE);
 
 if (isset($_SESSION["EMAIL"])) {
@@ -20,5 +19,5 @@ if (ini_get("session.use_cookies")) {
 //セッションクリア
 @session_destroy();
 
-require_once('index.php');
+require_once 'index.php';
 ?>
